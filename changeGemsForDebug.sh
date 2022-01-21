@@ -33,28 +33,24 @@ fi
 WORKSPACE=~/workspace/rakuma
 PERSONAL_SETTING_PATH="${WORKSPACE}/.vscode/personal_settings"
 REPOGITORY_PATH=${WORKSPACE}/$1
+GEMFILE_PATH="${REPOGITORY_PATH}/Gemfile"
 
-echo "Change ${REPOGITORY_PATH}/Gemfile"
+echo "Change ${GEMFILE_PATH}"
 echo "\n"
 
 # `fril-engine`と記述のある行を探して、行を修正/削除
 # forで回したい
-sed -i -e "/fril-engine/c\gem 'fril-engine', path: '~/workspace/rakuma/fril-engine'" "${REPOGITORY_PATH}/Gemfile"
+sed -i -e "/fril-engine/c\gem 'fril-engine', path: '~/workspace/rakuma/fril-engine'" ${GEMFILE_PATH}
 echo "fril-engine   : replaced"
-sed -i -e '/ruby-debug-ide/d' "${REPOGITORY_PATH}/Gemfile"
+sed -i -e '/ruby-debug-ide/d' ${GEMFILE_PATH}
 echo "ruby-debug-ide: removed"
-sed -i -e '/debase/d' "${REPOGITORY_PATH}/Gemfile"
+sed -i -e '/debase/d' ${GEMFILE_PATH}
 echo "debase        : removed"
 echo "\n"
-
-# customGemfileの記述をGemfileの最終行にコピー
-# cat ${PERSONAL_SETTING_PATH}/GemChange/CustomGemfile | sed -n '1, 5p' >> "${REPOGITORY_PATH}/Gemfile"
-# echo "complete change Gem setting"
 
 # Gemfile変更とbundle更新
 echo "Start   : add Gems & bundle install"
 cd ${REPOGITORY_PATH}
-# echo "gem 'fril-engine', path: '~/workspace/rakuma/fril-engine'" >> "${REPOGITORY_PATH}/Gemfile"
 bundle clean && bundle install --path vendor/bundle
 gem install ruby-debug-ide
 gem install debase -v '0.2.5.beta2'
