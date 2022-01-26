@@ -40,7 +40,7 @@ echo "\n"
 
 # `fril-engine`と記述のある行を探して、行を修正/削除
 echo "fril-engine   : start replacing"
-sed -i -e "/fril-engine/c\gem 'fril-engine', git: 'https://github.com/Fablic/fril-engine.git', path: '~/workspace/rakuma/fril-engine'" ${GEMFILE_PATH}
+sed -i -e "/fril-engine/c\gem 'fril-engine', path: '~/workspace/rakuma/fril-engine'" ${GEMFILE_PATH}
 (cd ${REPOGITORY_PATH} && bundle update --conservative fril-engine)
 echo "fril-engine   : complete replacing"
 echo "\n"
