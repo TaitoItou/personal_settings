@@ -39,22 +39,21 @@ echo "Change ${GEMFILE_PATH}"
 echo "\n"
 
 # `fril-engine`と記述のある行を探して、行を修正/削除
-sed -i -e "/fril-engine/c\gem 'fril-engine', path: '~/workspace/rakuma/fril-engine'" ${GEMFILE_PATH}
-echo "fril-engine   : replaced"
+echo "fril-engine   : start replacing"
+sed -i -e "/fril-engine/c\gem 'fril-engine', git: 'https://github.com/Fablic/fril-engine.git', path: '~/workspace/rakuma/fril-engine'" ${GEMFILE_PATH}
+(cd ${REPOGITORY_PATH} && bundle update --conservative fril-engine)
+echo "fril-engine   : complete replacing"
+echo "\n"
 
 sed -i -e '/ruby-debug-ide/d' ${GEMFILE_PATH}
 echo "gem 'ruby-debug-ide'" >> ${GEMFILE_PATH}
-echo "ruby-debug-ide: added"
-
 sed -i -e '/debase/d' ${GEMFILE_PATH}
 echo "gem 'debase', '~> 0.2.5.beta2'" >> ${GEMFILE_PATH}
+
+(cd ${REPOGITORY_PATH} && bundle install --path vendor/bundle)
+echo "\n"
+echo "ruby-debug-ide: added"
 echo "debase        : added"
 echo "\n"
 
-# Gemfile変更とbundle更新
-echo "Start   : add Gems & bundle install"
-(cd ${REPOGITORY_PATH} && bundle install --path vendor/bundle)
-# (cd ${REPOGITORY_PATH} && gem install ruby-debug-ide)
-# (cd ${REPOGITORY_PATH} && gem install debase -v '0.2.5.beta2')
-echo "\n"
 echo "Complete: bundle install"
