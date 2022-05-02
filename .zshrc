@@ -120,3 +120,42 @@ export PATH="/usr/local/opt/gnu-sed/libexec/gnubin/:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="/usr/local/opt/openssl@3/bin:$PATH"
+
+# alias(git)
+## gitリポジトリへ移動
+alias g='cd $(ghq root)/$(ghq list | peco)'
+## gitブランチ切り替え
+alias -g lb='`git branch | peco --prompt "GIT BRANCH>" | head -n 1 | sed -e "s/^\*\s*//g"`'
+
+# alias(rakuma)
+## fril_XX log
+rlog () {
+  cd $(ghq root)/$(ghq list | peco)
+  tail -f ./log/local.log
+ }
+## fril_XX run server
+rs () {
+  cd $(ghq root)/$(ghq list | peco)
+  RAILS_ENV=local bundle exec rails server -p 3010
+ }
+## fril_XX update fril-engine
+ufe () {
+   cd $(ghq root)/$(ghq list | peco)
+  bundle update --conservative fril-engine
+}
+
+# search history by using peco
+function select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(fc -l -n 1 | eval $tac | peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle -R -c
+}
+zle -N select-history
+bindkey '^r' select-history
